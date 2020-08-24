@@ -1,38 +1,17 @@
 <template>
   <div class="ele-import-download">
-    <el-link
-      :href="filepath"
-      :underline="false"
-      @click.native="handleDownload"
-      target="_blank"
-    >
+    <el-link :href="filepath" :underline="false" @click.native="handleDownload" target="_blank">
       <i class="el-icon-document"></i>
     </el-link>
     <div>
-      <el-link
-        :href="filepath"
-        :underline="false"
-        @click.native="handleDownload"
-        target="_blank"
-      >点击下载模板文件</el-link>
+      <el-link :href="filepath" :underline="false" @click.native="handleDownload" target="_blank">点击下载模板文件</el-link>
     </div>
 
     <div class="ele-import-action">
-      <el-button
-        @click="handleDownload"
-        type="success"
-      >
-        <el-link
-          :href="filepath"
-          :underline="false"
-          style="color: white"
-          target="_blank"
-        >下载模板</el-link>
+      <el-button @click="handleDownload" type="success">
+        <el-link :href="filepath" :underline="false" style="color: white" target="_blank">下载模板</el-link>
       </el-button>
-      <el-button
-        @click="handleNext"
-        type="primary"
-      >下一步</el-button>
+      <el-button @click="handleNext" type="primary">下一步</el-button>
     </div>
   </div>
 </template>
@@ -46,6 +25,10 @@ export default {
   props: {
     filepath: {
       type: String,
+      required: true
+    },
+    mustdownload: {
+      type: Boolean,
       required: true
     }
   },
@@ -73,7 +56,11 @@ export default {
 
     // 判断是否已经下载
     checkHasDownload () {
-      this.hasDownload = Cookie.get('ele-import-download-' + this.filepath)
+      if (this.mustdownload) {
+        this.hasDownload = Cookie.get('ele-import-download-' + this.filepath)
+      } else {
+        this.hasDownload = true
+      }
     }
   },
   mounted () {
@@ -84,13 +71,13 @@ export default {
 </script>
 
 <style scoped>
-.ele-import-download {
-  text-align: center;
-}
+  .ele-import-download {
+    text-align: center;
+  }
 
-.ele-import-download .el-icon-document {
-  font-size: 150px;
-  line-height: 1.2;
-  color: #67c23a;
-}
+  .ele-import-download .el-icon-document {
+    font-size: 150px;
+    line-height: 1.2;
+    color: #67c23a;
+  }
 </style>

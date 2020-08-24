@@ -1,51 +1,21 @@
 <template>
   <div>
-    <el-dialog
-      :title="title"
-      :visible="visible"
-      :width="dialogWidth"
-      @close="handlClose"
-      append-to-body
-      v-if="visible"
-    >
-      <ele-steps
-        :active="currentStep"
-        :steps="['下载模板', '上传文件', '确认数据', '完成']"
-        :stepsAttrs="{
+    <el-dialog :title="title" :visible="visible" :width="dialogWidth" @close="handlClose" append-to-body v-if="visible">
+      <ele-steps :active="currentStep" :steps="['下载模板', '上传文件', '确认数据', '完成']" :stepsAttrs="{
           'align-center': true
-        }"
-      />
+        }" />
       <!-- 下载模板 -->
-      <ele-import-download
-        :filepath="filepath"
-        v-if="currentStep === 1"
-      />
+      <ele-import-download :filepath="filepath" :mustdownload="mustdownload" v-if="currentStep === 1" />
 
       <!-- 上传Excel -->
-      <ele-import-upload
-        :fields="fields"
-        :tips="tips"
-        @upload="handleUpload"
-        v-if="currentStep === 2"
-      />
+      <ele-import-upload :fields="fields" :tips="tips" @upload="handleUpload" v-if="currentStep === 2" />
 
       <!-- 数据展示 -->
-      <ele-import-data
-        :append="append"
-        :fields="fields"
-        :formatter="formatter"
-        :request-fn="requestFn"
-        :rules="rules"
-        :table-data="tableData"
-        @pre="handleStep3Pre"
-        v-if="currentStep === 3"
-      />
+      <ele-import-data :append="append" :fields="fields" :formatter="formatter" :request-fn="requestFn" :rules="rules"
+        :table-data="tableData" @pre="handleStep3Pre" v-if="currentStep === 3" />
 
       <!-- 导入结束 -->
-      <ele-import-finish
-        @finish="handleFinish"
-        v-if="currentStep === 4"
-      />
+      <ele-import-finish @finish="handleFinish" v-if="currentStep === 4" />
     </el-dialog>
   </div>
 </template>
@@ -63,6 +33,10 @@ export default {
     // 文件路径
     filepath: {
       type: String,
+      required: true
+    },
+    mustdownload: {
+      type: Boolean,
       required: true
     },
     // 请求方法
@@ -98,7 +72,7 @@ export default {
         for (const key in formatter) {
           if (!(formatter[key] instanceof Object)) {
             // eslint-disable-next-line
-            console.error(`${key}的值必须为 对象 或 函数`)
+              console.error(`${key}的值必须为 对象 或 函数`)
             return false
           }
         }
@@ -174,8 +148,8 @@ export default {
 </script>
 
 <style>
-.ele-import-action {
-  margin-top: 20px;
-  text-align: center;
-}
+  .ele-import-action {
+    margin-top: 20px;
+    text-align: center;
+  }
 </style>
