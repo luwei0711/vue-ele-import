@@ -22,7 +22,9 @@
         },
         append: {
           company: '腾讯',
-          leader: '小马哥'
+          leader: '小马哥',
+          state: 0,
+          msg: '失败'
         },
         formatter: {
           city: {
@@ -52,13 +54,27 @@
         filepath: 'https://raw.githubusercontent.com/dream2023/vue-ele-import/master/public/user.xlsx',
         mustdownload: false,
         visible: false,
-        tableData: ''
+        tableData: []
       }
     },
     methods: {
       async requestFn(data) {
-        this.tableData = JSON.stringify(data)
+        //this.tableData = JSON.stringify(data)
         console.log(data)
+        this.tableData = []
+        console.log('this1:', this)
+        for (var i in data) {
+          console.log('this1:', this)
+          console.log(i, ':', data[i])
+          data[i].state = 1
+          data[i].msg = '成功'
+          console.log(data[i].name)
+          console.log('修改完：', data[i])
+          this.tableData.push(data[i])
+          console.log('添加进数组：', this.tableData)
+        }
+        console.log('this.tableData->type:', typeof(this.tableData))
+        console.log('this.tableData:', this.tableData)
         // eslint-disable-next-line
         // return Promise.reject({ 1: { age: '名字错了' } })
         return Promise.resolve()
